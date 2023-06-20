@@ -4,7 +4,7 @@ What is Rich domain ?
 
 Let's define first what is the opposite of rich domain
 
-## Anaemic Domain Model
+## Anemic Domain Model
 
 ### Looks like a real domain object
 
@@ -25,7 +25,7 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2
 
 https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2db0fc8a95568dae622ca/src/main/java/fr/bpifrance/crafts/orders/services/RemoveOrderItemService.java#L13-L25
 
-  - Utilities, factories, mapper classes that share logic between multiple services ([DRY](https://almostengineer.medium.com/dry-principle-of-software-development-common-mistake-15510cfea53e]))
+  - Utilities, factories, mapper classes that share logic between multiple layers ([DRY](https://almostengineer.medium.com/dry-principle-of-software-development-common-mistake-15510cfea53e]))
 
 https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2db0fc8a95568dae622ca/src/main/java/fr/bpifrance/crafts/orders/utils/OrderUtils.java#L7-L12
 
@@ -40,10 +40,15 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2
   - Procedural programming, manipulate data and share them between objects
   - Contrary of the basic idea of OOP
     - Combine data and behaviors
-  - Breaks encapsulation
-    - Object state are exposed
-    - Getters/Setters
+    - Breaks encapsulation
+      - Object state are exposed
+      - Getters/Setters
   - Coupling and Low cohesion
+
+Example of a new feature: user can choose the quantity of order items
+- https://github.com/zakariabpifrance/rich-domain-orders/pull/1/files
+- ![img.png](docs/assets/coupling_low_cohesion.png)
+- Most of the business services are impacted
 
 ### Why this is a common practice ?
 
@@ -51,13 +56,30 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2
     - ORMs
     - Lombook
     - Mapstruct
+    - Serialization tools (Jackson, Gson...)
     > Don’t marry the framework. Robert C. Martin
-    - Some books and academic articles
+  - Some books and academic articles
+
+## Rich Domain Model
+
+### A real object
+- Respect OOP and Encapsulation
+- Implement behaviours
+- High cohesion & low coupling
+  https://github.com/zakariabpifrance/rich-domain-orders/blob/31ab22d28b00b4ed286c8e508ee31f07fb4e489b/src/main/java/fr/bpifrance/crafts/orders/Order.java#L5-L56
+
+### How to create a rich domain object ?
+
+#### [Tell don't ask](https://martinfowler.com/bliki/TellDontAsk.html)
+![img.png](docs/assets/tell-dont-ask.png)
+
+> **`Don't do that`**
+
+https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2db0fc8a95568dae622ca/src/main/java/fr/bpifrance/crafts/orders/services/OrderTotalAmountService.java#L14-L23
+
+> **`Do :`**
+https://github.com/zakariabpifrance/rich-domain-orders/blob/31ab22d28b00b4ed286c8e508ee31f07fb4e489b/src/main/java/fr/bpifrance/crafts/orders/Order.java#L27-L33
 
 
-
-
-
-  
 
 
