@@ -1,12 +1,10 @@
-package fr.bpifrance.crafts.orders.repositories;
-
-import fr.bpifrance.crafts.orders.model.Order;
+package fr.bpifrance.crafts.orders;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class OrderRepository {
+public final class OrderManagement {
 
     private Map<Long, Order> registry = new HashMap<>();
 
