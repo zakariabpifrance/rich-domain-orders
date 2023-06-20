@@ -5,15 +5,10 @@ import java.util.*;
 public final class Order {
 
     private final Long id;
-    private final Map<String, Double> items;
-
-    public Order(Long id, Map<String, Double> items) {
-        this.id = id;
-        this.items = Optional.ofNullable(items).orElseGet(HashMap::new);
-    }
+    private final Map<String, Double> items = new HashMap<>(5);
 
     public Order(Long id) {
-        this(id, null);
+        this.id = id;
     }
 
     public Long getId() {

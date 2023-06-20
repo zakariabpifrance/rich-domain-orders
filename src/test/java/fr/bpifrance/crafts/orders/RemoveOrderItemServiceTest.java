@@ -13,11 +13,10 @@ class RemoveOrderItemServiceTest {
 
     @BeforeEach
     void setup() {
-        Map<String, Double> orderItems = new HashMap<>();
-        orderItems.put("XYZ12345", 48d);
-        orderItems.put("TSH-FF0000-L", 156d);
+        var order = new Order(1L);
 
-        var order = new Order(1L, orderItems);
+        order.addOrderItem("XYZ12345", 48d);
+        order.addOrderItem("TSH-FF0000-L", 156d);
 
         orderManagement.save(order);
     }
