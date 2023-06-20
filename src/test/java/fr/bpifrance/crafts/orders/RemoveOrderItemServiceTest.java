@@ -1,55 +1,48 @@
-package fr.bpifrance.crafts.orders.services;
+package fr.bpifrance.crafts.orders;
 
-import fr.bpifrance.crafts.orders.model.Order;
-import fr.bpifrance.crafts.orders.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RemoveOrderItemServiceTest {
 
-    private final OrderRepository orderRepository = new OrderRepository();
+    private final OrderManagement orderManagement = new OrderManagement();
 
     @BeforeEach
     void setup() {
-        var order = new Order();
-        order.setId(1L);
-
         Map<String, Double> orderItems = new HashMap<>();
         orderItems.put("XYZ12345", 48d);
         orderItems.put("TSH-FF0000-L", 156d);
 
-        order.setItems(orderItems);
+        var order = new Order(1L, orderItems);
 
-        orderRepository.save(order);
+        orderManagement.save(order);
     }
 
     @Test
     void shouldRemoveOrderItem() {
         // Given
-        var removeOrderItemService = new RemoveOrderItemService(orderRepository);
+        var removeOrderItemService = new RemoveOrderItemService(orderManagement);
 
         String skuToBeRemoved = "XYZ12345";
 
         // When
         removeOrderItemService.removeItem(1L, skuToBeRemoved);
-        Optional<Order> order = orderRepository.findById(1L);
+        Optional<Order> order = orderManagement.findById(1L);
 
         // Then
         assertTrue(order.isPresent());
         assertEquals(1L, order.get().getId());
-        assertFalse(order.get().getItems().containsKey("XYZ12345"));
+        assertFalse(order.get().containsItem("XYZ12345"));
     }
 
     @Test
     void shouldThrowsNotFoundOrder() {
         // Given
-        var removeOrderItemService = new RemoveOrderItemService(orderRepository);
+        var removeOrderItemService = new RemoveOrderItemService(orderManagement);
 
         String skuToBeRemoved = "TSH-FFF-M";
 
@@ -60,16 +53,13 @@ class RemoveOrderItemServiceTest {
     @Test
     void shouldThrowsErrorWhenOrderIsEmpty() {
         // Given
-        var order = new Order();
-        order.setId(3L);
+        var order = new Order(3L);
 
-        Map<String, Double> orderItems = new HashMap<>();
-        order.setItems(orderItems);
-        orderRepository.save(order);
+        orderManagement.save(order);
 
         String skuToBeRemoved = "TSH-FFF-M";
 
-        var removeOrderItemService = new RemoveOrderItemService(orderRepository);
+        var removeOrderItemService = new RemoveOrderItemService(orderManagement);
 
         // When & Then
         assertThrows(RuntimeException.class, () -> removeOrderItemService.removeItem(3L, skuToBeRemoved));
@@ -78,7 +68,7 @@ class RemoveOrderItemServiceTest {
     @Test
     void shouldThrowsErrorWhenOrderItemNotFound() {
         // Given
-        var removeOrderItemService = new RemoveOrderItemService(orderRepository);
+        var removeOrderItemService = new RemoveOrderItemService(orderManagement);
 
         String skuToBeRemoved = "fake-sku";
 
