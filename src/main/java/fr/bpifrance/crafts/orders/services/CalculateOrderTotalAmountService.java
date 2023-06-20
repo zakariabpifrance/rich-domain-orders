@@ -17,7 +17,8 @@ public class CalculateOrderTotalAmountService {
         if (OrderUtils.isEmpty(order)) {
             return 0;
         }
-        return order.getItems().values().stream()
+        return order.getItems().stream()
+            .map(orderItem -> orderItem.getPrice() * orderItem.getQuality())
             .reduce(0d, Double::sum);
     }
 }

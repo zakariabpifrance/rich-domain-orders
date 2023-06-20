@@ -10,11 +10,11 @@ public class AddOrderItemService {
         this.orderRepository = orderRepository;
     }
 
-    public void addOrderItem(Long orderId, String sku, Double price) {
+    public void addOrderItem(Long orderId, String sku, Double price, int quantity) {
         var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalStateException("Order not found !"));
 
-        OrderItemFactory.createOrderItem(order, sku, price);
+        OrderItemFactory.createOrderItem(order, sku, price, quantity);
         orderRepository.save(order);
     }
 }
