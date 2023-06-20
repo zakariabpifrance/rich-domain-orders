@@ -1,13 +1,14 @@
 package fr.bpifrance.crafts.orders.services;
 
 import fr.bpifrance.crafts.orders.model.Order;
+import fr.bpifrance.crafts.orders.model.OrderItem;
 import fr.bpifrance.crafts.orders.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,9 +21,21 @@ class AddOrderItemServiceTest {
         var order = new Order();
         order.setId(1L);
 
-        Map<String, Double> orderItems = new HashMap<>();
-        orderItems.put("XYZ12345", 48d);
-        orderItems.put("TSH-FF0000-L", 156d);
+        Set<OrderItem> orderItems = new HashSet<>();
+        OrderItem orderItem1 = new OrderItem();
+        orderItem1.setSku("XYZ12345");
+        orderItem1.setPrice(48d);
+        orderItem1.setQuality(2);
+
+        orderItems.add(orderItem1);
+
+        OrderItem orderItem2 = new OrderItem();
+
+        orderItem2.setSku("TSH-FF0000-L");
+        orderItem2.setPrice(156d);
+        orderItem2.setQuality(1);
+
+        orderItems.add(orderItem2);
 
         order.setItems(orderItems);
 
@@ -38,14 +51,16 @@ class AddOrderItemServiceTest {
         double price = 79d;
 
         // When
-        addOrderItemService.addOrderItem(1L, newSku, price);
+        addOrderItemService.addOrderItem(1L, newSku, price, 10);
         Optional<Order> order = orderRepository.findById(1L);
 
         // Then
         assertTrue(order.isPresent());
         assertEquals(1L, order.get().getId());
-        assertTrue(order.get().getItems().containsKey("TSH-FFF-M"));
-        assertEquals(79d, order.get().getItems().get("TSH-FFF-M"));
+        Set<OrderItem> items = order.get().getItems();
+        assertTrue(items.stream().anyMatch(item -> item.getSku().equals("TSH-FFF-M")));
+        assertEquals(79d, items.stream().filter(item -> item.getSku().equals("TSH-FFF-M"))
+                .map(OrderItem::getPrice).findFirst().get());
     }
 
     @Test
@@ -57,6 +72,6 @@ class AddOrderItemServiceTest {
         double price = 79d;
 
         // When & Then
-        assertThrows(RuntimeException.class, () -> addOrderItemService.addOrderItem(2L, newSku, price));
+        assertThrows(RuntimeException.class, () -> addOrderItemService.addOrderItem(2L, newSku, price, 1));
     }
 }

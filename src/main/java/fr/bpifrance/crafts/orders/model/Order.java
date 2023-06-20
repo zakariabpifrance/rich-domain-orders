@@ -1,25 +1,25 @@
 package fr.bpifrance.crafts.orders.model;
 
-import java.util.Map;
+import java.util.Set;
 
 public class Order {
 
     private Long id;
-    private Map<String, Double> items;
+    private Set<OrderItem> items;
     private PaymentMethod paymentMethod;
     private DeliveryMethod deliveryMethod;
 
     public Order() {}
 
-    public Order(Map<String, Double> items) {
+    public Order(Set<OrderItem> items) {
         this.items = items;
     }
 
-    public Map<String, Double> getItems() {
+    public Set<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(Map<String, Double> items) {
+    public void setItems(Set<OrderItem> items) {
         this.items = items;
     }
 

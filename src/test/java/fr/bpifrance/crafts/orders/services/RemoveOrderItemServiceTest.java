@@ -1,13 +1,12 @@
 package fr.bpifrance.crafts.orders.services;
 
 import fr.bpifrance.crafts.orders.model.Order;
+import fr.bpifrance.crafts.orders.model.OrderItem;
 import fr.bpifrance.crafts.orders.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,9 +19,18 @@ class RemoveOrderItemServiceTest {
         var order = new Order();
         order.setId(1L);
 
-        Map<String, Double> orderItems = new HashMap<>();
-        orderItems.put("XYZ12345", 48d);
-        orderItems.put("TSH-FF0000-L", 156d);
+        Set<OrderItem> orderItems = new HashSet<>();
+        OrderItem orderItem1 = new OrderItem();
+        orderItem1.setSku("XYZ12345");
+        orderItem1.setPrice(48d);
+        orderItem1.setQuality(2);
+        orderItems.add(orderItem1);
+
+        OrderItem orderItem2 = new OrderItem();
+        orderItem2.setSku("TSH-FF0000-L");
+        orderItem2.setPrice(156d);
+        orderItem2.setQuality(1);
+        orderItems.add(orderItem2);
 
         order.setItems(orderItems);
 
@@ -43,7 +51,7 @@ class RemoveOrderItemServiceTest {
         // Then
         assertTrue(order.isPresent());
         assertEquals(1L, order.get().getId());
-        assertFalse(order.get().getItems().containsKey("XYZ12345"));
+        assertFalse(order.get().getItems().stream().anyMatch(item -> item.getSku().equals("XYZ12345")));
     }
 
     @Test
@@ -63,8 +71,7 @@ class RemoveOrderItemServiceTest {
         var order = new Order();
         order.setId(3L);
 
-        Map<String, Double> orderItems = new HashMap<>();
-        order.setItems(orderItems);
+        order.setItems(new HashSet<>());
         orderRepository.save(order);
 
         String skuToBeRemoved = "TSH-FFF-M";
