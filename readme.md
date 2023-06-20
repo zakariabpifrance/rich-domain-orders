@@ -44,6 +44,10 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2
     - Object state are exposed
     - Getters/Setters
   - Coupling and Low cohesion
+    - Example of new feature: user can choose the quantity of order items
+      - https://github.com/zakariabpifrance/rich-domain-orders/pull/1/files
+      - ![img.png](docs/assets/coupling_low_cohesion.png)
+      - Impacts most of the business features
 
 ### Why this is a common practice ?
 
@@ -51,8 +55,9 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/934c0a1b65878a999df2
     - ORMs
     - Lombook
     - Mapstruct
+    - Serialization tools (Jackson, Gson...)
     > Don’t marry the framework. Robert C. Martin
-    - Some books and academic articles
+  - Some books and academic articles
 
 
 
