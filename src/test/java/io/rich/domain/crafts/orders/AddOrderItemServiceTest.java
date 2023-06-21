@@ -1,4 +1,4 @@
-package fr.bpifrance.crafts.orders;
+package io.rich.domain.crafts.orders;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class AddOrderItemServiceTest {
     @BeforeEach
     void setup() {
         var order = new Order(1L);
-        order.addOrderItem("XYZ12345", 48d);
+        order.addOrderItem("XYZ12345", 48d, 2);
         order.addOrderItem("TSH-FF0000-L", 156d);
 
         orderManagement.save(order);
@@ -29,14 +29,14 @@ class AddOrderItemServiceTest {
         double price = 79d;
 
         // When
-        addOrderItemService.addOrderItem(1L, newSku, price);
+        addOrderItemService.addOrderItem(1L, newSku, price, 2);
         Optional<Order> order = orderManagement.findById(1L);
 
         // Then
         assertTrue(order.isPresent());
         assertEquals(1L, order.get().getId());
         assertTrue(order.get().containsItem("TSH-FFF-M"));
-        assertEquals(79d, order.get().getItemPrice("TSH-FFF-M"));
+        assertEquals(158.0, order.get().getItemPrice("TSH-FFF-M"));
     }
 
     @Test

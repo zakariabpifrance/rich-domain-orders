@@ -1,4 +1,4 @@
-package fr.bpifrance.crafts.orders;
+package io.rich.domain.crafts.orders;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

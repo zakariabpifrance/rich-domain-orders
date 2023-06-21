@@ -89,13 +89,13 @@ https://github.com/zakariabpifrance/rich-domain-orders/blob/31ab22d28b00b4ed286c
 
 ```java
 // `Don't do that`
-import fr.bpifrance.crafts.orders.Order;
-import fr.bpifrance.crafts.orders.OrderItem;
+
+import io.rich.domain.crafts.orders.OrderItem;
 
 order.getItems().get("TSH-FFF-M).getPrice();
 
 // Do
-import fr.bpifrance.crafts.orders.Order;
+
         
 order.getItemPrice("TSH-FFF-M");
 ```
@@ -107,8 +107,8 @@ order.getItemPrice("TSH-FFF-M");
 - Put things that change together in the same place
 - Avoid multi layer technical packages
 - Use package protected classes to hide implementation details
-- Avoid setters. (Martin Fowler GetterEradicator)[https://martinfowler.com/bliki/GetterEradicator.html]
-- Do not generate getters until your have a good reason for that. (Allen Hollob's article)[https://www.infoworld.com/article/2073723/why-getter-and-setter-methods-are-evil.html]
+- Avoid setters. [Martin Fowler GetterEradicator](https://martinfowler.com/bliki/GetterEradicator.html)
+- Do not generate getters until your have a good reason for that. [Allen Hollob's article](https://www.infoworld.com/article/2073723/why-getter-and-setter-methods-are-evil.html)
 
 #### Structure of the package:
 

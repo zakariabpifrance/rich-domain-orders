@@ -1,15 +1,17 @@
-package fr.bpifrance.crafts.orders;
+package io.rich.domain.crafts.orders;
 
-public class CalculateOrderTotalAmountService {
+
+public class RemoveOrderItemService {
     private final OrderManagement orderManagement;
 
-    public CalculateOrderTotalAmountService(OrderManagement orderManagement) {
+    public RemoveOrderItemService(OrderManagement orderManagement) {
         this.orderManagement = orderManagement;
     }
 
-    public double totalAmount(Long orderId) {
+    public void removeItem(Long orderId, String sku) {
         var order = orderManagement.findById(orderId)
                 .orElseThrow(() -> new IllegalStateException("Order not found !"));
-        return order.totalAmount();
+
+        order.removeItem(sku);
     }
 }

@@ -1,4 +1,4 @@
-package fr.bpifrance.crafts.orders;
+package io.rich.domain.crafts.orders;
 
 import java.util.HashMap;
 import java.util.Map;
