@@ -1,11 +1,14 @@
 package fr.bpifrance.crafts.orders;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 public final class Order {
 
     private final Long id;
-    private final Map<String, Double> items = new HashMap<>(5);
+    private final Set<OrderItem> items = new HashSet<>();
 
     public Order(Long id) {
         this.id = id;
@@ -15,15 +18,20 @@ public final class Order {
         return id;
     }
 
+    void addOrderItem(String sku, Double price, int quantity) {
+        this.items.add(new OrderItem(sku, price, quantity));
+    }
+
     void addOrderItem(String sku, Double price) {
-        this.items.put(sku, price);
+        addOrderItem(sku, price, 1);
     }
 
     double totalAmount() {
         if (isEmpty()) {
             return 0;
         }
-        return this.items.values().stream()
+        return this.items.stream()
+            .map(OrderItem::totalPrice)
             .reduce(0d, Double::sum);
     }
 
@@ -31,19 +39,27 @@ public final class Order {
         if (isEmpty()) {
             throw new RuntimeException("Cannot remove item from an empty order !");
         }
-        if (containsItem(sku)) {
-            this.items.remove(sku);
-        } else {
-            throw new RuntimeException("Cannot remove item [%s], reason: item no found !" .formatted(sku));
-        }
+        getItem(sku).ifPresentOrElse(
+                this.items::remove,
+                () -> {
+                    throw new RuntimeException("Cannot remove item [%s], reason: item no found !" .formatted(sku));
+                }
+        );
     }
 
     boolean containsItem(String sku) {
-        return this.items.containsKey(sku);
+        return getItem(sku).isPresent();
     }
 
     double getItemPrice(String sku) {
-        return this.items.get(sku);
+        return getItem(sku).map(OrderItem::totalPrice)
+                .orElseThrow(() -> new IllegalStateException("Cannot found item [%s] !" .formatted(sku)));
+    }
+
+    private Optional<OrderItem> getItem(String sku) {
+        return this.items.stream()
+                .filter(item -> item.sku().equals(sku))
+                .findFirst();
     }
 
     private boolean isEmpty() {

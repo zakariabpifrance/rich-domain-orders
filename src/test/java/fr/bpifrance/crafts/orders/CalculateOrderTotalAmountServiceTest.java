@@ -3,8 +3,6 @@ package fr.bpifrance.crafts.orders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +14,7 @@ class CalculateOrderTotalAmountServiceTest {
     void setup() {
         var order = new Order(1L);
 
-        order.addOrderItem("XYZ12345", 48d);
+        order.addOrderItem("XYZ12345", 48d, 2);
         order.addOrderItem("TSH-FF0000-L", 156d);
         order.addOrderItem("TSH-000-S", 78.78d);
 
@@ -32,7 +30,7 @@ class CalculateOrderTotalAmountServiceTest {
         double totalAmount = calculateOrderTotalAmountService.totalAmount(1L);
 
         // Then
-        assertEquals(282.78, totalAmount);;
+        assertEquals(330.78, totalAmount);;
     }
 
     @Test
